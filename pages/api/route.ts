@@ -42,12 +42,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const rawData = await geminiResponse.json();
     const exercisesText = rawData?.candidates?.[0]?.content?.parts?.[0]?.text || "No exercises found";
 
-    // Extract structured exercises from Gemini response (assumes a list format)
     const exercises = exercisesText
       .split("\n")
       .filter(ex => ex.trim() !== "" && !ex.includes("I cannot provide image URLs"))
       .map(exercise => {
-        const match = exercise.match(/^(.*?): (.*)$/); // Extract "Exercise Name: Description"
+        const match = exercise.match(/^(.*?): (.*)$/);
         const name = match ? match[1].trim() : exercise.trim();
         const description = match ? match[2].trim() : "No description available.";
 
